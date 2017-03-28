@@ -17,7 +17,7 @@ func TestSetBit(t *testing.T) {
 
 	for _, v := range []uint{10, 100, 123, 600, 750, 999} {
 		if ba.Contains(v) {
-			t.Failed()
+			t.Fatal()
 		}
 	}
 }
