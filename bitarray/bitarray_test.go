@@ -15,10 +15,6 @@ func TestSetBit(t *testing.T) {
 		ba.Add(v)
 	}
 
-	if len(ba) != 994 {
-		t.Failed()
-	}
-
 	for _, v := range []uint{10, 100, 123, 600, 750, 999} {
 		if ba.Contains(v) {
 			t.Failed()

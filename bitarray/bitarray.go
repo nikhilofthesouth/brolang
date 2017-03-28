@@ -24,7 +24,7 @@ func CreateEmpty(size uint) (bitarray) {
 func CreateFull(size uint) (bitarray) {
 	ba := CreateEmpty(size)
 	for i := range ba {
-		ba[i] ^= 0
+		ba[i] = ^uint(0)
 	}
 	return ba
 }
@@ -53,9 +53,9 @@ func (b bitarray) Contains(loc uint) (bool) {
 }
 
 func (b bitarray) View() (set []uint) {
-	set = make([]uint, IntSize)
+	set = make([]uint, 0)
 	length := uint(len(b)) * IntSize
-	for j := uint(2); j < length; j++ { // Don't allocate exabyte sized slices plz
+	for j := uint(0); j < length; j++ {
 		if b.Contains(j) {
 			set = append(set, j)
 		}
