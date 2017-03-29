@@ -6,7 +6,7 @@ import (
 )
 
 func Sieve(max uint) (bitarray.BitArray) {
-	ba := bitarray.CreateFull(max+1)
+	ba := bitarray.CreateFull(max)
 	ba.Remove(0)
 	ba.Remove(1)
 
