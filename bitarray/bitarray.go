@@ -13,52 +13,43 @@ func Create(size uint) (bitarray) {
 }
 
 func CreateEmpty(size uint) (bitarray) {
-	sliceSize := size / intSize
-	if size % intSize != 0 {
+	sliceSize := indexOf(size)
+	if offsetOf(size) != 0 {
 		sliceSize += 1
 	}
 	return make([]uint, sliceSize)
 }
-
 
 func CreateFull(size uint) (bitarray) {
 	ba := CreateEmpty(size)
 	for i := range ba {
 		ba[i] = ^uint(0)
 	}
-	setSize := ba.setSize()
+	setSize := ba.arraySize()
 	for i := size; i < setSize; i++ {
 		ba.Remove(i)
 	}
 	return ba
 }
 
-func GetIndex(location uint) uint {
-	return location / intSize
-}
-
-func GetOffset(location uint) uint {
-	return location % intSize
-}
-
 func (b bitarray) Add(loc uint) {
-	index := GetIndex(loc)
-	b[index] |= 1 << (loc % intSize)
+	index := indexOf(loc)
+	b[index] |= bitPosition(loc)
 }
 
 func (b bitarray) Remove(loc uint) {
-	index := GetIndex(loc)
-	b[index] &^= 1 << (loc % intSize)
+	index := indexOf(loc)
+	b[index] &^= bitPosition(loc)
 }
 
 func (b bitarray) Contains(loc uint) (bool) {
-	index := GetIndex(loc)
-	return b[index] & (1 << (loc % intSize)) > 0
+	index := indexOf(loc)
+	return b[index] & bitPosition(loc) > 0
 }
 
 func (b bitarray) View() ([]uint) {
 	set := make([]uint, 0)
-	length := b.setSize()
+	length := b.arraySize()
 	for j := uint(0); j < length; j++ {
 		if b.Contains(j) {
 			set = append(set, j)
@@ -67,6 +58,18 @@ func (b bitarray) View() ([]uint) {
 	return set
 }
 
-func (b bitarray) setSize() (uint) {
+func (b bitarray) arraySize() (uint) {
 	return uint(len(b)) * intSize
+}
+
+func indexOf(location uint) uint {
+	return location / intSize
+}
+
+func offsetOf(location uint) uint {
+	return location % intSize
+}
+
+func bitPosition(location uint) uint {
+	return 1 << offsetOf(location)
 }
