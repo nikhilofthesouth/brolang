@@ -6,13 +6,13 @@ import (
 
 const intSize = strconv.IntSize
 
-type bitarray []uint
+type BitArray []uint
 
-func Create(size uint) (bitarray) {
+func Create(size uint) (BitArray) {
 	return CreateEmpty(size)
 }
 
-func CreateEmpty(size uint) (bitarray) {
+func CreateEmpty(size uint) (BitArray) {
 	sliceSize := indexOf(size)
 	if offsetOf(size) != 0 {
 		sliceSize += 1
@@ -20,7 +20,7 @@ func CreateEmpty(size uint) (bitarray) {
 	return make([]uint, sliceSize)
 }
 
-func CreateFull(size uint) (bitarray) {
+func CreateFull(size uint) (BitArray) {
 	ba := CreateEmpty(size)
 	for i := range ba {
 		ba[i] = ^uint(0)
@@ -32,22 +32,22 @@ func CreateFull(size uint) (bitarray) {
 	return ba
 }
 
-func (b bitarray) Add(loc uint) {
+func (b BitArray) Add(loc uint) {
 	index := indexOf(loc)
 	b[index] |= bitPosition(loc)
 }
 
-func (b bitarray) Remove(loc uint) {
+func (b BitArray) Remove(loc uint) {
 	index := indexOf(loc)
 	b[index] &^= bitPosition(loc)
 }
 
-func (b bitarray) Contains(loc uint) (bool) {
+func (b BitArray) Contains(loc uint) (bool) {
 	index := indexOf(loc)
 	return b[index] & bitPosition(loc) > 0
 }
 
-func (b bitarray) View() ([]uint) {
+func (b BitArray) View() ([]uint) {
 	set := make([]uint, 0)
 	length := b.arraySize()
 	for j := uint(0); j < length; j++ {
@@ -58,7 +58,7 @@ func (b bitarray) View() ([]uint) {
 	return set
 }
 
-func (b bitarray) arraySize() (uint) {
+func (b BitArray) arraySize() (uint) {
 	return uint(len(b)) * intSize
 }
 
